@@ -70,7 +70,16 @@ export function SpatialCanvas({
   const ring = useMemo(stageRing, []);
 
   return (
-    <Canvas className={className} style={{ background }}>
+    // `frameloop="demand"`: a frame is drawn when something changed — every
+    // React commit into the canvas invalidates it, and everything that moves
+    // here (the listener, the lit set, a dragged instrument) arrives as
+    // props — not sixty times a second regardless. The default `always`
+    // loop rendered an unchanged stage on every frame, and that work sat on
+    // the main thread ahead of the piano keyboard's lit-keys ticker, which
+    // is how the keys came to light visibly after the notes sounded whenever
+    // this view was open. Wander and keyboard walking still animate: each
+    // step commits a new listener, and each commit draws a frame.
+    <Canvas className={className} style={{ background }} frameloop="demand">
       <color attach="background" args={[background]} />
       <fog attach="fog" args={[background, 8, 30]} />
       <PerspectiveCamera
@@ -100,6 +109,11 @@ export function SpatialCanvas({
           rotation={[...instrument.rotation]}
           scale={instrument.scale}
         >
+          {/* "Lights up" is the colour change alone. A `pointLight` used
+              to be mounted per sounding instrument too, which did nothing
+              visible — `LineBasicMaterial` is unlit, and every line on this
+              stage is one — while adding and removing scene lights on every
+              note-on and note-off. */}
           {instrument.geometry.map((geometry, i) => (
             <lineSegments key={i} geometry={geometry}>
               <lineBasicMaterial
@@ -107,15 +121,6 @@ export function SpatialCanvas({
               />
             </lineSegments>
           ))}
-          {/* A sounding instrument also casts a little light of its own
-              colour — "lights up", not just recolours its own lines. */}
-          {instrument.lit && (
-            <pointLight
-              color={instrument.litColor}
-              intensity={1.5}
-              distance={3}
-            />
-          )}
         </group>
       ))}
     </Canvas>
