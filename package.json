@@ -1,6 +1,6 @@
 {
   "name": "@sudobility/music_spatial",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "First-person 3D 'Spatial' stage view for Moosiac scores (web/Three.js) — wireframe instrument models, arrangement map overlay, movement.",
   "type": "module",
   "main": "./dist/index.js",
@@ -29,20 +29,18 @@
     "prepublishOnly": "bun run clean && bun run verify"
   },
   "peerDependencies": {
-    "@react-three/drei": "^10.7.8",
     "@react-three/fiber": "^9.0.0",
-    "@sudobility/music_spatial_core": "^0.0.7",
-    "@sudobility/music_types": "^0.13.42",
+    "@sudobility/music_spatial_core": "^0.0.8",
+    "@sudobility/music_types": "^0.13.43",
     "react": ">=18",
     "react-dom": ">=18",
     "three": "^0.160.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
-    "@react-three/drei": "^10.7.8",
     "@react-three/fiber": "^9.8.0",
-    "@sudobility/music_spatial_core": "^0.0.7",
-    "@sudobility/music_types": "^0.13.42",
+    "@sudobility/music_spatial_core": "^0.0.8",
+    "@sudobility/music_types": "^0.13.43",
     "@testing-library/react": "^16.0.0",
     "@types/react": "^19.2.18",
     "@types/three": "^0.186.0",

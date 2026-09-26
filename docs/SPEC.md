@@ -42,9 +42,10 @@ This package's own job shrinks to:
 - Capturing raw web input (`keydown`/`keyup` for movement, pointer events for
   drag) and handing it to `music_spatial_core`'s pure functions.
 - Rendering `music_spatial_core`'s `SpatialScene` output as JSX
-  (`<lineSegments geometry={...} />` per instrument, a `<PerspectiveCamera>`
-  from the scene's camera transform) and the map overlay's actual DOM/CSS
-  elements, positioned by `music_spatial_core`'s map math.
+  (one `<lineSegments geometry={...} />` per instrument, fiber's intrinsic
+  `<perspectiveCamera>` made the default from the scene's camera transform)
+  and the map overlay's actual DOM/CSS elements, positioned by
+  `music_spatial_core`'s map math.
 
 Full detail on what moved and why is in `music_spatial_core`'s spec; this
 document only covers what's still genuinely this package's own.
@@ -53,8 +54,8 @@ document only covers what's still genuinely this package's own.
 
 Same reasoning as `music_editing`/`music_player`/every other sibling in this
 family: this is a self-contained capability with its own dependency surface
-(`three`, `@react-three/fiber`, `@react-three/drei` — none of which anything
-else in the stack needs) and its own churn (instrument model authoring is
+(`three`, `@react-three/fiber` — neither of which anything else in the stack
+needs) and its own churn (instrument model authoring is
 going to be a long tail of small, unrelated commits, landing in
 `music_types` rather than here — see below). Keeping it out of `music_app`
 keeps that churn out of the app's own history and keeps the app's
@@ -78,11 +79,13 @@ music_spatial
 │                                            own JSX (`<lineSegments>`,
 │                                            `<primitive>`) is typed against
 │                                            `three`'s own types
-├── @react-three/fiber             (peer) — DOM Canvas renderer
-├── @react-three/drei              (dep)  — PerspectiveCamera, Billboard/
-│                                            Text helpers; not a peer, since
-│                                            nothing outside this package
-│                                            needs to agree on its version
+├── @react-three/fiber             (peer) — DOM Canvas renderer. Its intrinsic
+│                                            <perspectiveCamera> is the stage
+│                                            camera; drei was dropped once
+│                                            `makeDefault` was the only thing
+│                                            used of it (its PerspectiveCamera
+│                                            also allocated an unused 256x256
+│                                            render target and a useFrame)
 ├── react, react-dom                (peer)
 ```
 
@@ -157,12 +160,15 @@ This package has no dependency on the command layer or the store.
 ## Internal composition (not public API, but the intended shape)
 
 - `SpatialCanvas` — the `@react-three/fiber` `<Canvas>` root. Calls
-  `music_spatial_core`'s `buildScene(score, soundingTrackIds)` once per
-  relevant render, then maps `scene.instruments` to
-  `<lineSegments geometry={i.geometry} position={i.position}
-  rotation={i.rotation} />` and sets a `<PerspectiveCamera>` from
-  `scene.camera` — there is very little decision left for this component to
-  make; composition already happened in core.
+  `music_spatial_core`'s `buildInstruments` and `cameraFor` through
+  `useSpatialScene`, memoised apart — the instruments on the roster, the
+  arrangement's track positions and the lit set; the camera on the listener
+  alone, so a walking frame re-creates no instrument element — then maps the
+  instruments to one `<lineSegments geometry={i.geometry} position={i.position}
+  rotation={i.rotation} />` each (one draw call per track) and sets the
+  default `<perspectiveCamera>` from the camera — there is very little
+  decision left for this component to make; composition already happened in
+  core.
 - `MapOverlay` — the ported 2D top-down arrangement view, rendered as DOM/CSS
   elements positioned via `music_spatial_core`'s `pixelFromPoint`/
   `pointFromPixel`, drag handled via pointer events feeding

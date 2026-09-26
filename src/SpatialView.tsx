@@ -8,11 +8,7 @@
  * did.
  */
 import { useEffect, useMemo, useRef, useState } from 'react';
-import {
-  effectiveUnpluggedArrangement,
-  facingTrackId,
-  trackColors,
-} from '@sudobility/music_spatial_core';
+import { facingTrackId, trackColors } from '@sudobility/music_spatial_core';
 import type {
   Score,
   UnpluggedListener,
@@ -22,6 +18,7 @@ import { SpatialCanvas } from './SpatialCanvas';
 import { MapOverlay, type MapOverlayLabels } from './MapOverlay';
 import { useKeyboardMovement } from './useKeyboardMovement';
 import { useWander } from './useWander';
+import { useEffectiveArrangement } from './useSpatialScene';
 
 export interface SpatialViewProps {
   readonly score: Score;
@@ -63,7 +60,10 @@ export function SpatialView({
   onFacingTrackChange,
   className,
 }: SpatialViewProps) {
-  const arrangement = effectiveUnpluggedArrangement(score);
+  // Memoised per half (see `useEffectiveArrangement`): the bare call
+  // allocated on every render, so the `wanderInstruments` memo below never
+  // hit and the facing effect ran on every render, listener move or not.
+  const arrangement = useEffectiveArrangement(score);
   const colors = useMemo(() => trackColors(score.tracks), [score.tracks]);
   const wanderInstruments = useMemo(
     () =>
