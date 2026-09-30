@@ -7,8 +7,8 @@
       "devDependencies": {
         "@eslint/js": "^9.38.0",
         "@react-three/fiber": "^9.8.0",
-        "@sudobility/music_spatial_core": "^0.0.10",
-        "@sudobility/music_types": "^0.13.45",
+        "@sudobility/music_spatial_core": "^0.0.11",
+        "@sudobility/music_types": "^0.13.46",
         "@testing-library/react": "^16.0.0",
         "@types/react": "^19.2.18",
         "@types/three": "^0.186.0",
@@ -29,8 +29,8 @@
       },
       "peerDependencies": {
         "@react-three/fiber": "^9.0.0",
-        "@sudobility/music_spatial_core": "^0.0.10",
-        "@sudobility/music_types": "^0.13.45",
+        "@sudobility/music_spatial_core": "^0.0.11",
+        "@sudobility/music_types": "^0.13.46",
         "react": ">=18",
         "react-dom": ">=18",
         "three": "^0.160.0",
@@ -128,9 +128,9 @@
 
     "@standard-schema/spec": ["@standard-schema/spec@1.1.0", "", {}, "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w=="],
 
-    "@sudobility/music_spatial_core": ["@sudobility/music_spatial_core@0.0.10", "", { "peerDependencies": { "@sudobility/music_types": "^0.13.45", "react": ">=18", "three": "^0.160.0" } }, "sha512-WXGPQ+Pqup7y380uH7r+snNDcs/28uzYw9moh3cdb3ORf7Bmklx2NeYPqwQdmH8Z6RwFyNzTVBYoxnvVGzr7aA=="],
+    "@sudobility/music_spatial_core": ["@sudobility/music_spatial_core@0.0.11", "", { "peerDependencies": { "@sudobility/music_types": "^0.13.46", "react": ">=18", "three": "^0.160.0" } }, "sha512-h5+kAaeXKc2IoSd18GsOgDHoaYEyDAXbWHf0m5DAHUJ2dQuGY5R/+ll8uod6RKaHEGC5UfpaYdU6biMhvtJsUg=="],
 
-    "@sudobility/music_types": ["@sudobility/music_types@0.13.45", "", { "peerDependencies": { "@sudobility/types": "^1.9.68", "immer": "^10.0.0 || ^11.0.0", "zod": "^4.0.0" } }, "sha512-C8Xxa/gEqNIoWaNSkErFOvWX4VdmZcz+Mn8rxOqqyz/OfCWgPXxJaSjYYAPlq5rimYXwUFSfNTL+oqDhnBDKGA=="],
+    "@sudobility/music_types": ["@sudobility/music_types@0.13.46", "", { "peerDependencies": { "@sudobility/types": "^1.9.68", "immer": "^10.0.0 || ^11.0.0", "zod": "^4.0.0" } }, "sha512-/BDrInM5VfbCrG3iWgGfeSRWDpVag7c8UYs2mg0FVR8kG7uA3xkc1yopYRWsNYpRCJ7zdB1QXefGqxoLAQNLsA=="],
 
     "@sudobility/types": ["@sudobility/types@1.9.67", "", {}, "sha512-d+jk4L9i8VNvOnCJW/craqiiUTPH5aRq4KYe/QBrBU3mCcTfoYjgzzXopVQRcthiZ5dwQAEpdqCTQ0gAWRN6Ww=="],
 

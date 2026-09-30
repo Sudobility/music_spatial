@@ -15,7 +15,11 @@ import type {
   UnpluggedPoint,
 } from '@sudobility/music_types';
 import { SpatialCanvas } from './SpatialCanvas';
-import { MapOverlay, type MapOverlayLabels } from './MapOverlay';
+import {
+  MapOverlay,
+  MAP_BUTTONS_WIDTH,
+  type MapOverlayLabels,
+} from './MapOverlay';
 import { useKeyboardMovement } from './useKeyboardMovement';
 import { useWander } from './useWander';
 import { useEffectiveArrangement } from './useSpatialScene';
@@ -46,6 +50,8 @@ export interface SpatialViewProps {
   readonly onFacingTrackChange?: (trackId: string | null) => void;
   readonly className?: string;
 }
+
+const MAP_WIDTH = 220;
 
 export function SpatialView({
   score,
@@ -121,7 +127,9 @@ export function SpatialView({
             position: 'absolute',
             bottom: 12,
             right: 12,
-            width: 220,
+            // The map plus the button column to its left: the Wander
+            // button is always offered here, so the column always is.
+            width: MAP_WIDTH + MAP_BUTTONS_WIDTH,
           }}
         >
           <MapOverlay

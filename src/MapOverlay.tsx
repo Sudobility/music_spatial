@@ -90,10 +90,19 @@ const KEY_TURN_STEP = 10;
 const SURFACE = 'rgba(127, 127, 127, 0.18)';
 const EDGE = 'rgba(127, 127, 127, 0.4)';
 
+const BUTTON_WIDTH = 34;
+const GAP = 8;
 /**
- * A rounded icon button for the row under the map. Line icons on a 24-unit
- * box, drawn in the host's text colour; a pressed toggle fills with that
- * colour and inverts its icon by blending, since this package has no
+ * What the button column adds to the overlay's width, its gap included. The
+ * map takes whatever width the column leaves, so a host that wants a map of
+ * a given size makes its wrapper this much wider than that.
+ */
+export const MAP_BUTTONS_WIDTH = BUTTON_WIDTH + GAP;
+
+/**
+ * A rounded icon button for the column beside the map. Line icons on a
+ * 24-unit box, drawn in the host's text colour; a pressed toggle fills with
+ * that colour and inverts its icon by blending, since this package has no
  * second theme colour to invert into.
  */
 function IconButton({
@@ -123,7 +132,7 @@ function IconButton({
         background: on ? 'currentColor' : SURFACE,
         border: `1px solid ${on ? 'currentColor' : EDGE}`,
         borderRadius: 8,
-        width: 34,
+        width: BUTTON_WIDTH,
         height: 30,
         padding: 0,
         display: 'inline-flex',
@@ -325,11 +334,54 @@ export function MapOverlay({
 
   const geometry = geometryFor(canvasSize);
 
+  const hasButtons = Boolean(onWanderingChange || onResetArrangement);
+
+  // The buttons stand beside the map, not under it: a row under it cost its
+  // own height over the stage, where height is what the view is shortest
+  // of. The column is first and bottom-aligned, so the map keeps the
+  // overlay's bottom-right corner and does not move when the buttons come
+  // or go.
   return (
     <div
       className={className}
-      style={{ display: 'flex', flexDirection: 'column', gap: 8 }}
+      style={{ display: 'flex', alignItems: 'flex-end', gap: GAP }}
     >
+      {hasButtons && (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            flex: 'none',
+            gap: GAP,
+          }}
+        >
+          {onWanderingChange && (
+            <IconButton
+              label={t.wander}
+              pressed={wandering}
+              onClick={() => onWanderingChange(!wandering)}
+            >
+              {/* A walking figure: head, torso, one arm out, legs striding. */}
+              <circle cx="13" cy="4" r="2.2" />
+              <path d="M11.5 8.5 L9 12.5 L11 15 L9.5 20" />
+              <path d="M11.5 8.5 L14.5 9.5 L17 12.5" />
+              <path d="M11 15 L14 17 L15.5 20.5" />
+              <path d="M9 12.5 L6.5 13" />
+            </IconButton>
+          )}
+          {onResetArrangement && (
+            <IconButton
+              label={t.reset}
+              disabled={locked}
+              onClick={onResetArrangement}
+            >
+              {/* A reset arrow: three-quarter circle with an arrowhead. */}
+              <path d="M18.5 12 A6.5 6.5 0 1 1 15 6.4" />
+              <path d="M15 3.5 L15.2 7 L11.8 7.2" />
+            </IconButton>
+          )}
+        </div>
+      )}
       <div
         ref={canvasRef}
         tabIndex={0}
@@ -337,7 +389,8 @@ export function MapOverlay({
         style={{
           position: 'relative',
           aspectRatio: '1',
-          width: '100%',
+          flex: 1,
+          minWidth: 0,
           overflow: 'hidden',
           borderRadius: 12,
           background: SURFACE,
@@ -386,34 +439,6 @@ export function MapOverlay({
               onTurn={facingDeg => onMoveListener({ facingDeg })}
             />
           </div>
-        )}
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        {onWanderingChange && (
-          <IconButton
-            label={t.wander}
-            pressed={wandering}
-            onClick={() => onWanderingChange(!wandering)}
-          >
-            {/* A walking figure: head, torso, one arm out, legs striding. */}
-            <circle cx="13" cy="4" r="2.2" />
-            <path d="M11.5 8.5 L9 12.5 L11 15 L9.5 20" />
-            <path d="M11.5 8.5 L14.5 9.5 L17 12.5" />
-            <path d="M11 15 L14 17 L15.5 20.5" />
-            <path d="M9 12.5 L6.5 13" />
-          </IconButton>
-        )}
-        <span style={{ flex: 1 }} />
-        {onResetArrangement && (
-          <IconButton
-            label={t.reset}
-            disabled={locked}
-            onClick={onResetArrangement}
-          >
-            {/* A reset arrow: three-quarter circle with an arrowhead. */}
-            <path d="M18.5 12 A6.5 6.5 0 1 1 15 6.4" />
-            <path d="M15 3.5 L15.2 7 L11.8 7.2" />
-          </IconButton>
         )}
       </div>
     </div>
