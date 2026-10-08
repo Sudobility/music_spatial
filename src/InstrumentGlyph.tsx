@@ -4,7 +4,9 @@
  * standalone library — so it draws `music_types`' `trackInstrumentIcon` art
  * itself. `IconShape.d` is already valid SVG path syntax (the subset
  * `parseIconPath` parses is exactly SVG's own M/L/C/Q/Z), so an SVG
- * `<path>` element renders it directly with no conversion step.
+ * `<path>` element renders it directly with no conversion step. A vocal
+ * track is the exception: the stage draws it as a singer
+ * (`performerForTrack`), so the map marks it with that singer's silhouette.
  */
 import {
   trackInstrumentIcon,
@@ -12,6 +14,7 @@ import {
   ICON_STROKE_WIDTH,
 } from '@sudobility/music_types';
 import type { Track } from '@sudobility/music_types';
+import { performerForTrack } from '@sudobility/music_spatial_core';
 
 export interface InstrumentGlyphProps {
   readonly track: Pick<Track, 'clef' | 'midiProgram'>;
@@ -24,7 +27,8 @@ export function InstrumentGlyph({
   className,
   size = 20,
 }: InstrumentGlyphProps) {
-  const art = trackInstrumentIcon(track);
+  // A vocal track stands on the stage as a singer, and is marked as one.
+  const art = performerForTrack(track)?.icon ?? trackInstrumentIcon(track);
   return (
     <svg
       width={size}

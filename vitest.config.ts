@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
+  resolve: { dedupe: ['react', 'react-dom'] },
   test: {
     // jsdom: this package's own tests cover its thin JSX-composition layer
     // (SpatialCanvas, MapOverlay, keyboard handling), matching music_app's

@@ -29,12 +29,13 @@ import type {
   SpatialCamera,
   SpatialInstrument,
 } from '@sudobility/music_spatial_core';
-import type { Score } from '@sudobility/music_types';
+import type { Score, UnpluggedListener } from '@sudobility/music_types';
 import { useSpatialScene } from './useSpatialScene';
 
 export interface SpatialCanvasProps {
   readonly score: Pick<Score, 'tracks' | 'unplugged'>;
   readonly soundingTrackIds: ReadonlySet<string>;
+  readonly listenerOverride?: UnpluggedListener;
   /** Stage background colour. Default: a dark blue-grey. */
   readonly background?: string;
   readonly className?: string;
@@ -165,6 +166,7 @@ const MemoStageInstruments = memo(StageInstruments);
 export function SpatialCanvas({
   score,
   soundingTrackIds,
+  listenerOverride,
   background = DEFAULT_BACKGROUND,
   className,
 }: SpatialCanvasProps) {
@@ -172,7 +174,11 @@ export function SpatialCanvas({
   // `camera` on the listener alone — a walking frame touches only the
   // latter. Geometry is cached per model inside core, so a lit-set change
   // is a few object allocations per track, not a rebuild of any segment.
-  const { instruments, camera } = useSpatialScene(score, soundingTrackIds);
+  const { instruments, camera } = useSpatialScene(
+    score,
+    soundingTrackIds,
+    listenerOverride
+  );
   const ring = useMemo(stageRing, []);
 
   return (

@@ -21,6 +21,7 @@ import {
   type MapOverlayLabels,
 } from './MapOverlay';
 import { useKeyboardMovement } from './useKeyboardMovement';
+import { useStageDrag } from './useStageDrag';
 import { useWander } from './useWander';
 import { useEffectiveArrangement } from './useSpatialScene';
 
@@ -82,13 +83,26 @@ export function SpatialView({
     [score.tracks, arrangement.tracks, soundingTrackIds]
   );
   const [wandering, setWandering] = useState(false);
+  const moveListenerFromMap = (patch: Partial<UnpluggedListener>) => {
+    if (!wandering) onMoveListener(patch);
+  };
 
-  // Continuous walking is deliberately not gated on `locked`: locked
-  // disables *rearranging* instruments and the listener via drag, but
-  // walking through the stage is a read of the score, not an edit to it —
-  // the same distinction the spec draws for `locked` generally.
+  // Navigation remains available while arrangement editing is locked.
+  const [wanderListener, setWanderListener] =
+    useState<UnpluggedListener | null>(null);
+  const stageDrag = useStageDrag(arrangement.listener, onMoveListener, () =>
+    setWandering(false)
+  );
   useKeyboardMovement(arrangement.listener, onMoveListener);
-  useWander(wandering, arrangement.listener, wanderInstruments, onMoveListener);
+  useWander(
+    wandering,
+    arrangement.listener,
+    wanderInstruments,
+    setWanderListener,
+    () => setWanderListener(null)
+  );
+  const displayedListener =
+    wanderListener ?? stageDrag.preview ?? arrangement.listener;
 
   // Follow the instrument in front of the listener. The last reported id is
   // the hysteresis reference, so the pick sticks until something is clearly
@@ -96,7 +110,7 @@ export function SpatialView({
   const facingRef = useRef<string | null>(null);
   const onFacingRef = useRef(onFacingTrackChange);
   onFacingRef.current = onFacingTrackChange;
-  const { listener } = arrangement;
+  const listener = displayedListener;
   useEffect(() => {
     if (!onFacingRef.current) return;
     const next = facingTrackId(
@@ -115,12 +129,24 @@ export function SpatialView({
       className={className}
       style={{ position: 'relative', width: '100%', height: '100%' }}
     >
-      <SpatialCanvas
-        score={score}
-        soundingTrackIds={soundingTrackIds}
-        background={stageBackground}
-        className="spatial-canvas"
-      />
+      <div
+        data-testid="spatial-stage-drag"
+        style={{
+          width: '100%',
+          height: '100%',
+          touchAction: 'none',
+          cursor: 'grab',
+        }}
+        {...stageDrag}
+      >
+        <SpatialCanvas
+          score={score}
+          listenerOverride={displayedListener}
+          soundingTrackIds={soundingTrackIds}
+          background={stageBackground}
+          className="spatial-canvas"
+        />
+      </div>
       {showMap && (
         <div
           style={{
@@ -135,11 +161,11 @@ export function SpatialView({
           <MapOverlay
             tracks={score.tracks}
             colors={colors}
-            listener={arrangement.listener}
+            listener={displayedListener}
             trackPositions={arrangement.tracks}
             soundingTrackIds={soundingTrackIds}
             locked={locked}
-            onMoveListener={onMoveListener}
+            onMoveListener={moveListenerFromMap}
             onMoveTrack={onMoveTrack}
             onResetArrangement={onResetArrangement}
             wandering={wandering}

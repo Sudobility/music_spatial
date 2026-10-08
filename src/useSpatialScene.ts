@@ -22,6 +22,7 @@ import { defaultUnpluggedListener } from '@sudobility/music_types';
 import type {
   EffectiveUnpluggedArrangement,
   Score,
+  UnpluggedListener,
 } from '@sudobility/music_types';
 
 export type ArrangementScore = Pick<Score, 'tracks' | 'unplugged'>;
@@ -59,7 +60,8 @@ export function useEffectiveArrangement(
  */
 export function useSpatialScene(
   score: ArrangementScore,
-  soundingTrackIds: ReadonlySet<string>
+  soundingTrackIds: ReadonlySet<string>,
+  listenerOverride?: UnpluggedListener
 ): SpatialScene {
   const { tracks: arrangementTracks, listener } =
     useEffectiveArrangement(score);
@@ -67,6 +69,7 @@ export function useSpatialScene(
     () => buildInstruments(score.tracks, arrangementTracks, soundingTrackIds),
     [score.tracks, arrangementTracks, soundingTrackIds]
   );
-  const camera = useMemo(() => cameraFor(listener), [listener]);
+  const cameraListener = listenerOverride ?? listener;
+  const camera = useMemo(() => cameraFor(cameraListener), [cameraListener]);
   return useMemo(() => ({ instruments, camera }), [instruments, camera]);
 }

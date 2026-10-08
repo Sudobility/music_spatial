@@ -67,7 +67,7 @@ keeps that churn out of the app's own history and keeps the app's
 music_spatial
 ├── @sudobility/music_spatial_core (peer) — scene composition, geometry
 │                                            conversion, movement, map math,
-│                                            the throttled-commit hook —
+│                                            the local-preview commit hook —
 │                                            everything platform-agnostic
 ├── @sudobility/music_types        (peer) — Score, Track, UnpluggedListener/
 │                                            Point/Arrangement (re-exported
@@ -172,14 +172,15 @@ This package has no dependency on the command layer or the store.
 - `MapOverlay` — the ported 2D top-down arrangement view, rendered as DOM/CSS
   elements positioned via `music_spatial_core`'s `pixelFromPoint`/
   `pointFromPixel`, drag handled via pointer events feeding
-  `bearingFromCenter` and the shared `useThrottledCommit` hook. Only the
-  container changes from the original `UnpluggedTab.tsx` — a small panel
+  `bearingFromCenter` and the shared `useThrottledCommit` hook, which keeps
+  updates local during a drag and commits once on release. Auto-walk never
+  saves audience positions. Only the container changes from the original `UnpluggedTab.tsx` — a small panel
   overlaid on the canvas corner instead of a full inspector tab.
-- Movement — a `keydown`/`keyup` listener tracking held-key state (Up =
-  forward, Down = back, Left = turn left, Right = turn right, matching the
-  existing map shortcuts), producing a `MovementInput` each animation frame
-  and calling `music_spatial_core`'s `stepListener`, result passed to
-  `onMoveListener`.
+- Stage drag — captured pointer events turn the listener by the change in
+  screen bearing, keeping the grabbed scene point under the pointer
+  horizontally. Vertical travel is ignored; release stops the drag.
+- Keyboard — each arrow key event calls `stepListener` once: Left/Right turn
+  15 degrees; Up/Down move 0.5 metres forward/backward.
 
 ## Consuming-app changes this implies (documented here, built later)
 

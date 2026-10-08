@@ -7,4 +7,5 @@ export type { MapOverlayProps, MapOverlayLabels } from './MapOverlay';
 export { InstrumentGlyph } from './InstrumentGlyph';
 export type { InstrumentGlyphProps } from './InstrumentGlyph';
 export { useKeyboardMovement } from './useKeyboardMovement';
+export { useStageDrag } from './useStageDrag';
 export type { UseKeyboardMovementOptions } from './useKeyboardMovement';
