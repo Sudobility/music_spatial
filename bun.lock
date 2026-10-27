@@ -7,7 +7,7 @@
       "devDependencies": {
         "@eslint/js": "~10.0.1",
         "@react-three/fiber": "~9.8.2",
-        "@sudobility/music_spatial_core": "^0.0.24",
+        "@sudobility/music_spatial_core": "^0.0.25",
         "@sudobility/music_types": "^0.13.59",
         "@testing-library/react": "~16.3.3",
         "@types/react": "~19.3.0",
@@ -29,7 +29,7 @@
       },
       "peerDependencies": {
         "@react-three/fiber": "^9.0.0",
-        "@sudobility/music_spatial_core": "^0.0.24",
+        "@sudobility/music_spatial_core": "^0.0.25",
         "@sudobility/music_types": "^0.13.59",
         "react": ">=18",
         "react-dom": ">=18",
@@ -144,7 +144,7 @@
 
     "@standard-schema/spec": ["@standard-schema/spec@1.1.0", "", {}, "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w=="],
 
-    "@sudobility/music_spatial_core": ["@sudobility/music_spatial_core@0.0.24", "https://npm.pkg.github.com/download/@sudobility/music_spatial_core/0.0.24/0a3fbb302c9ea26b7d48c87e29866aecfb249529", { "peerDependencies": { "@sudobility/music_types": "^0.13.59", "react": ">=18", "three": "^0.160.0" } }, "sha512-OvEX83gM7/gtBViwD4p1ZrMGUV2rhTQJlni0N+cAQkOWS02OdKxcivUERa9YUKPhP9ZPUFpF+P99pf4Zh0v3RA=="],
+    "@sudobility/music_spatial_core": ["@sudobility/music_spatial_core@0.0.25", "https://npm.pkg.github.com/download/@sudobility/music_spatial_core/0.0.25/ca67913e546fe96df3813aa35b3f731bdb4e1fc5", { "peerDependencies": { "@sudobility/music_types": "^0.13.59", "react": ">=18", "three": "^0.160.0" } }, "sha512-6tyADnl0lMCFls7t83EAzhSFKJpOu+vuusdWMtJk2WsRgaq3zqtyzmNP5hKTzwEZ9atfbe7s1QsUg2whedJLMQ=="],
 
     "@sudobility/music_types": ["@sudobility/music_types@0.13.59", "https://npm.pkg.github.com/download/@sudobility/music_types/0.13.59/d4216f3795dba11bb8ba6b43dea2046f04db3e9c", { "peerDependencies": { "@sudobility/types": "^1.9.76", "immer": "^10.0.0 || ^11.0.0", "zod": "^4.0.0" } }, "sha512-DyWCDGi5V0IBEbMiMv9d8FgjCmV7hY2ft7v3Quj0rcR63aSSBAA7joQWnziVhgfUJXru5uUjFuLhOFbeObBa8g=="],
 
