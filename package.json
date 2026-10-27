@@ -1,6 +1,6 @@
 {
   "name": "@sudobility/music_spatial",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "description": "First-person 3D 'Spatial' stage view for Moosiac scores (web/Three.js) — wireframe instrument models, arrangement map overlay, movement.",
   "type": "module",
   "main": "./dist/index.js",
