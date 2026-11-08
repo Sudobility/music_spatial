@@ -7,8 +7,8 @@
       "devDependencies": {
         "@eslint/js": "~10.0.1",
         "@react-three/fiber": "~9.8.2",
-        "@sudobility/music_spatial_core": "^0.0.30",
-        "@sudobility/music_types": "^0.13.62",
+        "@sudobility/music_spatial_core": "^0.0.31",
+        "@sudobility/music_types": "^0.13.64",
         "@testing-library/react": "~16.3.3",
         "@types/react": "~19.3.0",
         "@types/three": "~0.186.0",
@@ -29,8 +29,8 @@
       },
       "peerDependencies": {
         "@react-three/fiber": "^9.0.0",
-        "@sudobility/music_spatial_core": "^0.0.30",
-        "@sudobility/music_types": "^0.13.62",
+        "@sudobility/music_spatial_core": "^0.0.31",
+        "@sudobility/music_types": "^0.13.64",
         "react": ">=18",
         "react-dom": ">=18",
         "three": "^0.160.0",
@@ -144,9 +144,9 @@
 
     "@standard-schema/spec": ["@standard-schema/spec@1.1.0", "", {}, "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w=="],
 
-    "@sudobility/music_spatial_core": ["@sudobility/music_spatial_core@0.0.30", "https://npm.pkg.github.com/download/@sudobility/music_spatial_core/0.0.30/dfbde226b864d68ffaf39bfc83bd3e259e6bf712", { "peerDependencies": { "@sudobility/music_types": "^0.13.62", "react": ">=18", "three": "^0.160.0" } }, "sha512-5fSINtAn/wUSAtrruOknZEFnCSbT1nMHqqBQQYaU4Isxfj20viLkMVKtzZ+DD1dZ8HNPIYh0RReosLmvYoknXw=="],
+    "@sudobility/music_spatial_core": ["@sudobility/music_spatial_core@0.0.31", "https://npm.pkg.github.com/download/@sudobility/music_spatial_core/0.0.31/d17094a9c1298dbcc95481af60ee5604824c0fbb", { "peerDependencies": { "@sudobility/music_types": "^0.13.64", "react": ">=18", "three": "^0.160.0" } }, "sha512-JuTRGhB9lyLzwC4LwV9ygEyEGVhcL7mvLQ4TcBv5dQYDShjVpdawl8adky5wiIf7uIwwbpUI9+ZHNSQmxFXP0A=="],
 
-    "@sudobility/music_types": ["@sudobility/music_types@0.13.62", "https://npm.pkg.github.com/download/@sudobility/music_types/0.13.62/e3c2aa29657c24c3c7b1bb81762fcb22c140d1b1", { "peerDependencies": { "@sudobility/types": "^1.9.78", "immer": "^10.0.0 || ^11.0.0", "zod": "^4.0.0" } }, "sha512-JCYIggLmiXDL0CBb8yp0uewc1GcUjvZDseC6kC05qHCq8VDCGpptiM8BdPSdIFVnGQrUrqtL0XUJidCfs5dIuw=="],
+    "@sudobility/music_types": ["@sudobility/music_types@0.13.64", "https://npm.pkg.github.com/download/@sudobility/music_types/0.13.64/1ac02a0d6e830fb5f2bc3c590c82b5b7f36ae97b", { "peerDependencies": { "@sudobility/types": "^1.9.78", "immer": "^10.0.0 || ^11.0.0", "zod": "^4.0.0" } }, "sha512-qe9RcSOEAo8v407H++bkBWzRtrHEk4YQNwGtWCg9rfsLHV2phwTsibl8Wb7J6jsM8PbriNIUK11zGnyL2m0phQ=="],
 
     "@sudobility/types": ["@sudobility/types@1.9.78", "https://npm.pkg.github.com/download/@sudobility/types/1.9.78/19ca0df5ad7d490bafc1b84384a8002f5dbc29ea", {}, "sha512-W6DYMUf7D0cVVUHDv5T8YZ339Wyay6xPx0CsdfNVgHDsm1ISDLhwacUwlM9xnvwXHGuAhP77wRVVo3uKGZe46Q=="],
 
