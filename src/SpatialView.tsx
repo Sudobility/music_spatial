@@ -49,6 +49,14 @@ export interface SpatialViewProps {
    * listener turns away from everything.
    */
   readonly onFacingTrackChange?: (trackId: string | null) => void;
+  /**
+   * Called as the auto-moving ("Wander") stage walks the listener to a new
+   * position, and with `null` when it stops. Unlike `onMoveListener` this is
+   * a *preview*: a host plays it live but never writes it to the score, so
+   * auto mode is heard without filling undo history with a random walk. Left
+   * undefined, wander stays the pre-existing visual-only preview.
+   */
+  readonly onPreviewListener?: (listener: UnpluggedListener | null) => void;
   readonly className?: string;
 }
 
@@ -65,6 +73,7 @@ export function SpatialView({
   mapLabels,
   stageBackground,
   onFacingTrackChange,
+  onPreviewListener,
   className,
 }: SpatialViewProps) {
   // Memoised per half (see `useEffectiveArrangement`): the bare call
@@ -94,12 +103,24 @@ export function SpatialView({
     setWandering(false)
   );
   useKeyboardMovement(arrangement.listener, onMoveListener);
+  // The wander step is both drawn (local `wanderListener`) and, via the host,
+  // heard (`onPreviewListener`) — the latter a live preview that never writes
+  // to the score. Through a ref so a new callback each render never restarts
+  // the walk (`useWander`'s effect keys on `wandering` alone).
+  const onPreviewRef = useRef(onPreviewListener);
+  onPreviewRef.current = onPreviewListener;
   useWander(
     wandering,
     arrangement.listener,
     wanderInstruments,
-    setWanderListener,
-    () => setWanderListener(null)
+    next => {
+      setWanderListener(next);
+      onPreviewRef.current?.(next);
+    },
+    () => {
+      setWanderListener(null);
+      onPreviewRef.current?.(null);
+    }
   );
   const displayedListener =
     wanderListener ?? stageDrag.preview ?? arrangement.listener;
