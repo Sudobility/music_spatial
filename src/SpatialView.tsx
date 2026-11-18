@@ -108,7 +108,11 @@ export function SpatialView({
     next => onMoveListener(next),
     () => {}
   );
-  const displayedListener = stageDrag.preview ?? arrangement.listener;
+  // One source, one render path: the stage and the map always draw
+  // `score.unplugged.listener` (via `arrangement.listener`), whether idle,
+  // dragging, or auto-walking. Every gesture commits into that value, so there
+  // is nothing else to read and no branch for "auto mode vs not".
+  const displayedListener = arrangement.listener;
 
   // Follow the instrument in front of the listener. The last reported id is
   // the hysteresis reference, so the pick sticks until something is clearly

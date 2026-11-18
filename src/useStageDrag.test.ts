@@ -23,25 +23,33 @@ function pointer(clientX: number, clientY: number, pointerId = 1) {
 }
 
 describe('useStageDrag', () => {
-  it('previews the pointer immediately, ignores vertical travel, and commits once on release', () => {
+  it('commits the heading live on a horizontal move, ignores vertical travel, and stops on release', () => {
     const onMove = vi.fn();
     const { result } = renderHook(() => useStageDrag(LISTENER, onMove));
     act(() => result.current.onPointerDown(pointer(400, 200)));
+    // Vertical-only travel does not turn the view, so it commits nothing.
     act(() => result.current.onPointerMove(pointer(400, 550)));
-    expect(result.current.preview).toEqual(LISTENER);
-    act(() => result.current.onPointerMove(pointer(600, 550)));
-    const mixed = result.current.preview!;
-    act(() => result.current.onPointerMove(pointer(600, 200)));
-    expect(result.current.preview).toEqual(mixed);
-    expect(mixed.x).toBe(LISTENER.x);
-    expect(mixed.z).toBe(LISTENER.z);
-    expect(mixed.facingDeg).toBeLessThan(LISTENER.facingDeg);
-    // The drag is a preview: nothing reaches the store until release.
     expect(onMove).not.toHaveBeenCalled();
+    // A horizontal drag turns the view and commits straight to the single
+    // source of truth — live, while dragging, not on release. There is no
+    // local preview to read.
+    expect('preview' in result.current).toBe(false);
+    act(() => result.current.onPointerMove(pointer(600, 550)));
+    expect(onMove).toHaveBeenCalled();
+    const calls = onMove.mock.calls;
+    const committed = calls[calls.length - 1][0] as {
+      x: number;
+      z: number;
+      facingDeg: number;
+    };
+    expect(committed.x).toBe(LISTENER.x);
+    expect(committed.z).toBe(LISTENER.z);
+    expect(committed.facingDeg).toBeLessThan(LISTENER.facingDeg);
+    // Release ends the gesture; a later move commits nothing more.
     act(() => result.current.onPointerUp(pointer(600, 200)));
-    expect(onMove).toHaveBeenCalledTimes(1);
-    expect(onMove).toHaveBeenCalledWith(mixed);
-    expect(result.current.preview).toBeNull();
+    const afterRelease = onMove.mock.calls.length;
+    act(() => result.current.onPointerMove(pointer(300, 200)));
+    expect(onMove.mock.calls.length).toBe(afterRelease);
   });
 
   it('stops on release or pointer capture loss', () => {
