@@ -25,8 +25,8 @@ same core; neither spatial package depends on the other.
   turn the listener with its handle, reset the arrangement, toggle wander.
 - **Movement** — `useStageDrag` (pointer turns the view horizontally),
   `useKeyboardMovement` (arrow keys: Left/Right turn 15°, Up/Down step 0.5 m),
-  and `useWander` (automatic random walk, a transient preview that never saves
-  positions).
+  and `useWander` (automatic random walk; every step is committed through
+  `onMoveListener`, so there is no separate wander position).
 
 ## Public API
 
@@ -133,7 +133,7 @@ src/
   useSpatialScene.ts    # memo boundaries over core's buildInstruments/cameraFor
   useKeyboardMovement.ts # arrow-key stepping
   useStageDrag.ts       # pointer drag to turn the view
-  useWander.ts          # automatic random walk preview
+  useWander.ts          # automatic random walk (commits each step)
   *.test.ts             # vitest unit tests
 docs/SPEC.md            # original design spec (historical; predates implementation)
 scripts/fix-esm-imports.mjs

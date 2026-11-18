@@ -47,8 +47,8 @@ bun run verify         # format:check + typecheck + lint + test:unit + build (fu
   arrangement + lit set; `camera` on the listener alone. Keep these split: a
   walking frame must not rebuild instrument geometry.
 - Input hooks: `useKeyboardMovement` (arrows: 15° turn, 0.5 m step),
-  `useStageDrag` (pointer turns view), `useWander` (rAF random walk, preview
-  only — never saves positions).
+  `useStageDrag` (pointer turns view), `useWander` (rAF random walk; every step is
+  committed through `onMoveListener` — there is no separate wander position).
 
 ## Key conventions / contracts
 

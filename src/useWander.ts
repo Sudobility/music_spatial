@@ -1,4 +1,8 @@
-/** Random walking as a transient local preview; it never saves positions. */
+/**
+ * Random walking. Each step is reported through `onStep`, which the caller
+ * commits to the one listener position (`score.unplugged.listener`) — the
+ * walk keeps no position of its own beyond the frame it is computing.
+ */
 import { useEffect, useRef } from 'react';
 import {
   IDLE_WANDER,
@@ -14,17 +18,14 @@ export function useWander(
   enabled: boolean,
   listener: UnpluggedListener,
   instruments: readonly WanderInstrument[],
-  onPreview: (next: UnpluggedListener) => void,
-  onStop: () => void
+  onStep: (next: UnpluggedListener) => void
 ): void {
   const listenerRef = useRef(listener);
   listenerRef.current = listener;
   const instrumentsRef = useRef(instruments);
   instrumentsRef.current = instruments;
-  const onPreviewRef = useRef(onPreview);
-  onPreviewRef.current = onPreview;
-  const onStopRef = useRef(onStop);
-  onStopRef.current = onStop;
+  const onStepRef = useRef(onStep);
+  onStepRef.current = onStep;
 
   useEffect(() => {
     if (!enabled) return;
@@ -48,7 +49,7 @@ export function useWander(
         state = step.state;
         if (step.listener !== currentListener) {
           currentListener = step.listener;
-          onPreviewRef.current(currentListener);
+          onStepRef.current(currentListener);
         }
       }
       frame = requestAnimationFrame(tick);
@@ -56,7 +57,6 @@ export function useWander(
     frame = requestAnimationFrame(tick);
     return () => {
       if (frame !== null) cancelAnimationFrame(frame);
-      onStopRef.current();
     };
   }, [enabled]);
 }

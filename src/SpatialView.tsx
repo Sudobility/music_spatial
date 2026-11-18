@@ -101,12 +101,8 @@ export function SpatialView({
   // `setUnpluggedListener` carries a `coalesceKey`, so the whole walk folds
   // into one undo entry and a per-frame commit is cheap (and, being a `mix`
   // command, reaches the engine live while playing). Nothing to revert on stop.
-  useWander(
-    wandering,
-    arrangement.listener,
-    wanderInstruments,
-    next => onMoveListener(next),
-    () => {}
+  useWander(wandering, arrangement.listener, wanderInstruments, next =>
+    onMoveListener(next)
   );
   // One source, one render path: the stage and the map always draw
   // `score.unplugged.listener` (via `arrangement.listener`), whether idle,
